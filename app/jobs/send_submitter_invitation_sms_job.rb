@@ -12,13 +12,13 @@ class SendSubmitterInvitationSmsJob
     return if submitter.submission.archived_at?
     return if submitter.submission.expired?
     return if submitter.template&.archived_at?
-    return unless WhatsAppMessages.configured?(submitter.account)
+    return unless WhatsappMessages.configured?(submitter.account)
 
     body = ReplaceEmailVariables.call(message_body_for(submitter),
                                       submitter:,
                                       tracking_event_type: 'click_sms')
 
-    WhatsAppMessages.send_message(account: submitter.account, number: submitter.phone, body:)
+    WhatsappMessages.send_message(account: submitter.account, number: submitter.phone, body:)
 
     SubmissionEvent.create!(submitter:, event_type: 'send_sms', data: { phone: submitter.phone, segments: 1 })
 

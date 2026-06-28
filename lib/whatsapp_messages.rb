@@ -4,7 +4,7 @@ require 'json'
 require 'net/http'
 require 'uri'
 
-module WhatsAppMessages
+module WhatsappMessages
   LoginError = Class.new(StandardError)
   SendError = Class.new(StandardError)
   ConfigError = Class.new(StandardError)
