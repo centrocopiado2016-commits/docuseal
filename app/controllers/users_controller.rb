@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   load_and_authorize_resource :user, only: %i[index edit update destroy]
 
   before_action :build_user, only: %i[new create]
+  before_action :ensure_admin_user
   authorize_resource :user, only: %i[new create]
 
   def index
@@ -31,11 +32,14 @@ class UsersController < ApplicationController
     end
   end
 
-  def new; end
+  def new
+    @registration_mode = params[:mode]
+  end
 
   def edit; end
 
   def create
+    @registration_mode = params[:registration_mode].presence || 'invite'
     existing_user = User.accessible_by(current_ability).find_by(email: @user.email)
 
     if existing_user
@@ -52,12 +56,14 @@ class UsersController < ApplicationController
     end
 
     @user.password = SecureRandom.hex if @user.password.blank?
-    @user.role = User::ADMIN_ROLE unless role_valid?(@user.role)
+    @user.role = User::USER_ROLE unless role_valid?(@user.role)
 
     if @user.save
-      UserMailer.invitation_email(@user).deliver_later!
+      UserMailer.invitation_email(@user).deliver_later! unless manual_registration?
 
-      redirect_back fallback_location: settings_users_path, notice: I18n.t('user_has_been_invited')
+      notice = manual_registration? ? 'Usuario registrado correctamente.' : I18n.t('user_has_been_invited')
+
+      redirect_back fallback_location: settings_users_path, notice:
     else
       render turbo_stream: turbo_stream.replace(:modal, template: 'users/new'), status: :unprocessable_content
     end
@@ -103,8 +109,18 @@ class UsersController < ApplicationController
 
   private
 
+  def ensure_admin_user
+    return if current_user.admin?
+
+    redirect_to root_path, alert: 'No autorizado.'
+  end
+
   def role_valid?(role)
     User::ROLES.include?(role)
+  end
+
+  def manual_registration?
+    @registration_mode == 'manual'
   end
 
   def build_user

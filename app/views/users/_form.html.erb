@@ -1,4 +1,5 @@
 <%= form_for user, html: { class: 'space-y-4' }, data: { turbo_frame: :_top } do |f| %>
+  <%= hidden_field_tag :registration_mode, local_assigns[:registration_mode] if user.new_record? %>
   <div class="space-y-2">
     <div class="flex space-x-4">
       <div class="w-full">
@@ -24,10 +25,10 @@
         </span>
       <% end %>
     </div>
-    <% if user.new_record? && !Docuseal.multitenant? %>
+    <% if user.new_record? && !Docuseal.multitenant? && local_assigns[:registration_mode] == 'manual' %>
       <div class="form-control">
         <%= f.label :password, t('password'), class: 'label' %>
-        <%= f.password_field :password, class: 'base-input' %>
+        <%= f.password_field :password, required: true, class: 'base-input' %>
       </div>
     <% end %>
     <% if f.object != current_user %>

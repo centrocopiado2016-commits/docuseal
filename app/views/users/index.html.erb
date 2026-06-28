@@ -71,7 +71,7 @@
               </td>
               <td>
                 <span class="badge badge-info badge-outline whitespace-nowrap">
-                  <%= t(user.role) %>
+                  <%= user.admin? ? 'Administrador' : 'Usuario' %>
                 </span>
               </td>
               <td>

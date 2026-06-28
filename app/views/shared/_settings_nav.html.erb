@@ -9,9 +9,11 @@
       <li>
         <%= link_to t('profile'), settings_profile_index_path, class: 'text-base hover:bg-base-300' %>
       </li>
-      <li>
-        <%= link_to t('account'), settings_account_path, class: 'text-base hover:bg-base-300' %>
-      </li>
+      <% if current_user.admin? %>
+        <li>
+          <%= link_to t('account'), settings_account_path, class: 'text-base hover:bg-base-300' %>
+        </li>
+      <% end %>
       <% unless Docuseal.multitenant? %>
         <% if can?(:read, EncryptedConfig.new(key: EncryptedConfig::EMAIL_SMTP_KEY, account: current_account)) && ENV['SMTP_ADDRESS'].blank? && true_user == current_user %>
           <li>
@@ -29,7 +31,7 @@
           </li>
         <% end %>
       <% end %>
-      <% if can?(:read, AccountConfig) %>
+      <% if can?(:manage, AccountConfig) %>
         <li>
           <%= link_to t('notifications'), settings_notifications_path, class: 'text-base hover:bg-base-300' %>
         </li>
@@ -39,12 +41,12 @@
           <%= link_to t('e_signature'), settings_esign_path, class: 'text-base hover:bg-base-300' %>
         </li>
       <% end %>
-      <% if can?(:read, AccountConfig) %>
+      <% if can?(:read, :personalization_settings) || can?(:read, AccountConfig) %>
         <li>
           <%= link_to t('personalization'), settings_personalization_path, class: 'text-base hover:bg-base-300' %>
         </li>
       <% end %>
-      <% if can?(:read, User) %>
+      <% if current_user.admin? && can?(:read, User) %>
         <li>
           <%= link_to t('users'), settings_users_path, class: 'text-base hover:bg-base-300' %>
         </li>

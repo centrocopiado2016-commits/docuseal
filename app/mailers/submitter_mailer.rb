@@ -24,7 +24,7 @@ class SubmitterMailer < ApplicationMailer
                template_submitters_index.dig(@submitter.uuid, 'request_email_subject').presence ||
                @submitter.template&.preferences&.dig('request_email_subject').presence
 
-    @email_config = AccountConfigs.find_for_account(@current_account, AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY)
+    @email_config = email_config_for_submitter(@submitter, AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY)
     @body ||= fetch_config_email_body(@email_config, @submitter)
 
     assign_message_metadata('submitter_invitation', @submitter)
@@ -55,7 +55,7 @@ class SubmitterMailer < ApplicationMailer
 
     Submissions::EnsureResultGenerated.call(submitter)
 
-    @email_config = AccountConfigs.find_for_account(@current_account, AccountConfig::SUBMITTER_COMPLETED_EMAIL_KEY)
+    @email_config = email_config_for_submitter(@submitter, AccountConfig::SUBMITTER_COMPLETED_EMAIL_KEY)
 
     add_completed_email_attachments!(
       submitter,
@@ -111,7 +111,7 @@ class SubmitterMailer < ApplicationMailer
 
     Submissions::EnsureResultGenerated.call(@submitter)
 
-    @email_config = AccountConfigs.find_for_account(@current_account, AccountConfig::SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY)
+    @email_config = email_config_for_submitter(@submitter, AccountConfig::SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY)
 
     add_completed_email_attachments!(
       submitter,
@@ -168,6 +168,16 @@ class SubmitterMailer < ApplicationMailer
     return nil if reply_to.to_s.match?(NO_REPLY_REGEXP)
 
     reply_to
+  end
+
+  def email_config_for_submitter(submitter, key)
+    user = submitter.submission.created_by_user || submitter.template&.author
+
+    if user && !user.admin? && (config = user.user_configs.find_by(key: UserConfig.personalization_key(key)))
+      AccountConfig.new(account: @current_account, key:, value: config.value)
+    else
+      AccountConfigs.find_for_account(@current_account, key)
+    end
   end
 
   def add_completed_email_attachments!(submitter, with_audit_log: true, with_documents: true)

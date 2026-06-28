@@ -6,6 +6,7 @@ module Abilities
 
     def collection(user, ability: nil)
       templates = Template.where(account_id: user.account_id)
+      templates = templates.where(author_id: user.id) unless user.admin?
 
       return templates unless user.account.testing?
 
@@ -18,6 +19,7 @@ module Abilities
 
     def entity(template, user:, ability: nil)
       return true if template.account_id.blank?
+      return template.author_id == user.id if !user.admin? && template.author_id.present?
       return true if template.account_id == user.account_id
       return false unless user.account.linked_account_account
       return false if template.template_sharings.to_a.blank?

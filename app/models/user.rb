@@ -48,7 +48,8 @@
 #
 class User < ApplicationRecord
   ROLES = [
-    ADMIN_ROLE = 'admin'
+    ADMIN_ROLE = 'admin',
+    USER_ROLE = 'user'
   ].freeze
 
   EMAIL_REGEXP = /[^@;,<>\s]+@[^@;,<>\s]+/
@@ -95,7 +96,15 @@ class User < ApplicationRecord
   def sidekiq?
     return true if Rails.env.development?
 
-    role == 'admin'
+    admin?
+  end
+
+  def admin?
+    role == ADMIN_ROLE
+  end
+
+  def regular_user?
+    role == USER_ROLE
   end
 
   def self.sign_in_after_reset_password

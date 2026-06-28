@@ -1,3 +1,19 @@
 <%= render 'shared/turbo_modal', title: t('new_user') do %>
-  <%= render 'form', user: @user %>
+  <% if @registration_mode.blank? %>
+    <div class="space-y-4 py-2">
+      <p class="text-sm text-neutral-600">
+        Elige como quieres crear el acceso del usuario.
+      </p>
+      <%= link_to new_user_path(mode: 'invite'), class: 'btn btn-primary w-full justify-start gap-3', data: { turbo_frame: 'modal' } do %>
+        <%= svg_icon('mail', class: 'w-5 h-5') %>
+        <span>Enviar link de registro por correo</span>
+      <% end %>
+      <%= link_to new_user_path(mode: 'manual'), class: 'btn btn-outline w-full justify-start gap-3', data: { turbo_frame: 'modal' } do %>
+        <%= svg_icon('user_plus', class: 'w-5 h-5') %>
+        <span>Registrar manualmente</span>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render 'form', user: @user, registration_mode: @registration_mode %>
+  <% end %>
 <% end %>

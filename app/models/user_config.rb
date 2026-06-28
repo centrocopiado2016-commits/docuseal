@@ -26,8 +26,13 @@ class UserConfig < ApplicationRecord
   RECEIVE_COMPLETED_EMAIL = 'receive_completed_email'
   RECEIVE_DECLINED_EMAIL = 'receive_declined_email'
   SHOW_APP_TOUR = 'show_app_tour'
+  PERSONALIZATION_PREFIX = 'personalization.'
 
   belongs_to :user
 
   serialize :value, coder: JSON
+
+  def self.personalization_key(key)
+    "#{PERSONALIZATION_PREFIX}#{key}"
+  end
 end
