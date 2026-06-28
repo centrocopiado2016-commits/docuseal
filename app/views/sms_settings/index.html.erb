@@ -1,8 +1,39 @@
 <div class="flex flex-wrap space-y-4 md:flex-nowrap md:space-y-0">
   <%= render 'shared/settings_nav' %>
   <div class="flex-grow max-w-xl mx-auto">
-    <h1 class="text-4xl font-bold mb-4">SMS</h1>
-    <%= render 'placeholder' %>
+    <h1 class="text-4xl font-bold mb-4">WhatsApp</h1>
+    <% value = @encrypted_config.value || {} %>
+    <%= form_for @encrypted_config, url: settings_sms_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
+      <%= f.fields_for :value do |ff| %>
+        <div class="form-control">
+          <%= ff.label :api_url, 'URL del API', class: 'label' %>
+          <%= ff.url_field :api_url, value: value['api_url'] || 'https://whatsapp.api.waneuralhub.com', required: true, class: 'base-input' %>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="form-control">
+            <%= ff.label :email, 'Email', class: 'label' %>
+            <%= ff.email_field :email, value: value['email'], required: true, class: 'base-input' %>
+          </div>
+          <div class="form-control">
+            <%= ff.label :password, 'Contraseña', class: 'label' %>
+            <%= ff.password_field :password, required: value['password'].blank?, placeholder: value['password'].present? ? '*************' : '', class: 'base-input' %>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="form-control">
+            <%= ff.label :whatsapp_id, 'WhatsApp ID', class: 'label' %>
+            <%= ff.number_field :whatsapp_id, value: value['whatsapp_id'] || value['whatsappId'], required: true, class: 'base-input' %>
+          </div>
+          <div class="form-control">
+            <%= ff.label :country_code, 'Código de país por defecto', class: 'label' %>
+            <%= ff.text_field :country_code, value: value['country_code'] || '504', required: true, class: 'base-input' %>
+          </div>
+        </div>
+      <% end %>
+      <div class="form-control pt-2">
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+      </div>
+    <% end %>
   </div>
   <div class="w-0 md:w-52"></div>
 </div>

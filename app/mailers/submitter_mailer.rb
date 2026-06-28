@@ -173,7 +173,7 @@ class SubmitterMailer < ApplicationMailer
   def email_config_for_submitter(submitter, key)
     user = submitter.submission.created_by_user || submitter.template&.author
 
-    if user && !user.admin? && (config = user.user_configs.find_by(key: UserConfig.personalization_key(key)))
+    if user && (config = user.user_configs.find_by(key: UserConfig.personalization_key(key)))
       AccountConfig.new(account: @current_account, key:, value: config.value)
     else
       AccountConfigs.find_for_account(@current_account, key)

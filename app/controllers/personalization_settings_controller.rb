@@ -3,18 +3,15 @@
 class PersonalizationSettingsController < ApplicationController
   ALLOWED_KEYS = [
     AccountConfig::FORM_COMPLETED_BUTTON_KEY,
+    AccountConfig::FORM_COMPLETED_MESSAGE_KEY,
+    *(Docuseal.multitenant? ? [] : [AccountConfig::POLICY_LINKS_KEY])
+  ].freeze
+  PERSONAL_MESSAGE_KEYS = [
     AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY,
     AccountConfig::SUBMITTER_INVITATION_REMINDER_EMAIL_KEY,
     AccountConfig::SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY,
     AccountConfig::SUBMITTER_COMPLETED_EMAIL_KEY,
-    AccountConfig::FORM_COMPLETED_MESSAGE_KEY,
-    *(Docuseal.multitenant? ? [] : [AccountConfig::POLICY_LINKS_KEY])
-  ].freeze
-  USER_ALLOWED_KEYS = [
-    AccountConfig::SUBMITTER_INVITATION_EMAIL_KEY,
-    AccountConfig::SUBMITTER_INVITATION_REMINDER_EMAIL_KEY,
-    AccountConfig::SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY,
-    AccountConfig::SUBMITTER_COMPLETED_EMAIL_KEY
+    AccountConfig::SUBMITTER_INVITATION_SMS_KEY
   ].freeze
 
   InvalidKey = Class.new(StandardError)
@@ -24,13 +21,17 @@ class PersonalizationSettingsController < ApplicationController
   before_action :load_and_authorize_account_config, only: :create
 
   def show
-    authorize!(:read, :personalization_settings) unless can?(:read, AccountConfig)
+    if current_user.admin?
+      authorize!(:read, AccountConfig.new(account: current_account))
+    else
+      authorize!(:read, :personalization_settings)
+    end
   end
 
   def create
     normalize_config_value!
 
-    current_user.admin? ? save_account_config! : save_user_config!
+    personal_message_key? ? save_user_config! : save_account_config!
 
     redirect_back(fallback_location: settings_personalization_path, notice: I18n.t('settings_have_been_saved'))
   end
@@ -38,35 +39,43 @@ class PersonalizationSettingsController < ApplicationController
   private
 
   def load_and_authorize_account_config
-    @account_config = if current_user.admin?
-                        current_account.account_configs.find_or_initialize_by(key: account_config_params[:key])
-                      else
+    @account_config = if personal_message_key?
                         AccountConfig.new(account: current_account, key: account_config_params[:key])
+                      else
+                        current_account.account_configs.find_or_initialize_by(key: account_config_params[:key])
                       end
 
     @account_config.assign_attributes(account_config_params)
 
-    if current_user.admin?
+    if personal_message_key?
+      authorize!(:manage, current_user.user_configs.build)
+    elsif current_user.admin?
       authorize!(:create, @account_config)
       raise InvalidKey unless ALLOWED_KEYS.include?(@account_config.key)
     else
-      authorize!(:manage, current_user.user_configs.build)
-      raise InvalidKey unless USER_ALLOWED_KEYS.include?(@account_config.key)
+      raise InvalidKey
     end
 
     @account_config
   end
 
   def personalization_config_for(key)
-    return AccountConfigs.find_or_initialize_for_key(current_account, key) if current_user.admin?
+    return account_personalization_config_for(key) unless PERSONAL_MESSAGE_KEYS.include?(key)
 
     user_config = current_user.user_configs.find_by(key: UserConfig.personalization_key(key))
+    account_config = AccountConfigs.find_for_account(current_account, key)
 
     AccountConfig.new(
       account: current_account,
       key:,
-      value: user_config&.value || AccountConfig::DEFAULT_VALUES[key]&.call
+      value: user_config&.value || account_config&.value || AccountConfig::DEFAULT_VALUES[key]&.call || {}
     )
+  end
+
+  def account_personalization_config_for(key)
+    config = AccountConfigs.find_or_initialize_for_key(current_account, key)
+    config.value ||= AccountConfig::DEFAULT_VALUES[key]&.call || {}
+    config
   end
 
   def normalize_config_value!
@@ -112,5 +121,9 @@ class PersonalizationSettingsController < ApplicationController
     end
 
     attrs
+  end
+
+  def personal_message_key?
+    PERSONAL_MESSAGE_KEYS.include?(account_config_params[:key])
   end
 end

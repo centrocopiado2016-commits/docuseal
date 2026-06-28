@@ -33,6 +33,7 @@ class Ability
     can :manage, WebhookUrl, account_id: user.account_id
 
     can :manage, :mcp
+    can :read, :personalization_settings
   end
 
   def user_permissions(user)

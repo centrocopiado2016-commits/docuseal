@@ -1,0 +1,19 @@
+<div class="collapse collapse-plus bg-base-200 overflow-visible">
+  <input type="checkbox">
+  <div class="collapse-title text-xl font-medium capitalize">
+    <div>
+      Mensaje de WhatsApp para solicitud de firma
+    </div>
+  </div>
+  <div class="collapse-content">
+    <%= form_for personalization_config_for(AccountConfig::SUBMITTER_INVITATION_SMS_KEY), url: settings_personalization_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
+      <%= f.hidden_field :key %>
+      <%= f.fields_for :value, Struct.new(:body).new(f.object.value['body']) do |ff| %>
+        <%= render 'personalization_settings/email_body_field', ff:, config: f.object %>
+      <% end %>
+      <div class="form-control pt-2">
+        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+      </div>
+    <% end %>
+  </div>
+</div>

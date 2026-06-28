@@ -23,6 +23,7 @@
 class AccountConfig < ApplicationRecord
   SUBMITTER_INVITATION_EMAIL_KEY = 'submitter_invitation_email'
   SUBMITTER_INVITATION_REMINDER_EMAIL_KEY = 'submitter_invitation_reminder_email'
+  SUBMITTER_INVITATION_SMS_KEY = 'submitter_invitation_sms'
   SUBMITTER_COMPLETED_EMAIL_KEY = 'submitter_completed_email'
   SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY = 'submitter_documents_copy_email'
   BCC_EMAILS = 'bcc_emails'
@@ -63,6 +64,7 @@ class AccountConfig < ApplicationRecord
 
   EMAIL_VARIABLES = {
     SUBMITTER_INVITATION_EMAIL_KEY => %w[template.name submitter.link account.name].freeze,
+    SUBMITTER_INVITATION_SMS_KEY => %w[template.name submitter.link account.name].freeze,
     SUBMITTER_COMPLETED_EMAIL_KEY => %w[template.name submission.submitters submission.link].freeze,
     SUBMITTER_INVITATION_REMINDER_EMAIL_KEY => %w[template.name submitter.link account.name].freeze,
     SUBMITTER_DOCUMENTS_COPY_EMAIL_KEY => %w[template.name documents.link account.name].freeze
@@ -79,6 +81,11 @@ class AccountConfig < ApplicationRecord
       {
         'subject' => I18n.t(:you_are_invited_to_sign_a_document),
         'body' => I18n.t(:submitter_invitation_email_sign_body)
+      }
+    },
+    SUBMITTER_INVITATION_SMS_KEY => lambda {
+      {
+        'body' => I18n.t(:submitter_invitation_sms_body_sign)
       }
     },
     SUBMITTER_COMPLETED_EMAIL_KEY => lambda {

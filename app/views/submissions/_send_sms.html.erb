@@ -1,3 +1,6 @@
 <div class="form-control">
-  <%= render 'sms_settings/placeholder' %>
+  <div class="flex items-center justify-between mx-1">
+    <span>Enviar solicitud por WhatsApp</span>
+    <%= check_box_tag :send_sms, '1', local_assigns.fetch(:checked, false), class: 'toggle' %>
+  </div>
 </div>
