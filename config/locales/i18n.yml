@@ -86,8 +86,8 @@ en: &en
   you_have_been_invited_to_account_name_product_name_please_sign_up_using_the_link_below_: 'You have been invited to %{account_name} %{product_name}. Please sign up using the link below:'
   sent_using_product_name_in_testing_mode_html: 'Sent using <a href="%{product_url}">%{product_name}</a> in testing mode'
   sent_using_product_name_free_document_signing_html: 'Sent using <a href="%{product_url}">%{product_name}</a> free document signing.'
-  sent_with_docuseal_pro_html: 'Sent with <a href="%{product_url}">DocuSeal Pro</a>'
-  show_send_with_docuseal_pro_attribution_in_emails_html: Show "Sent with <span class="link">DocuSeal Pro</span>" attribution in emails
+  sent_with_docuseal_pro_html: 'Sent with <a href="%{product_url}">Pro features</a>'
+  show_send_with_docuseal_pro_attribution_in_emails_html: Show "Sent with <span class="link">Pro features</span>" attribution in emails
   sign_documents_with_trusted_certificate_provided_by_docu_seal_your_documents_and_data_are_never_shared_with_docu_seal_p_d_f_checksum_is_provided_to_generate_a_trusted_signature: Sign documents with trusted certificate provided by DocuSeal. Your documents and data are never shared with DocuSeal. PDF checksum is provided to generate a trusted signature.
   you_have_been_invited_to_submit_the_name_form: 'You have been invited to submit the "%{name}" form.'
   you_have_been_invited_to_sign_the_name: 'You have been invited to sign the "%{name}".'
@@ -247,7 +247,7 @@ en: &en
   save: Save
   saving: Saving
   changes_have_been_saved: Changes have been saved.
-  unlock_with_docuseal_pro: Unlock with DocuSeal Pro
+  unlock_with_docuseal_pro: Unlock Pro feature
   use_your_own_certificates_to_sign_and_verify_pdf_files: Use your own certificates to sign and verify PDF files.
   upload_certificate: Upload Certificate
   name: Name
@@ -347,7 +347,7 @@ en: &en
   password_has_been_changed: Password has been changed.
   email_integration: Email Integration
   send_via_connected_email: Send via connected email
-  activate_with_docuseal_pro: Activate with DocuSeal Pro
+  activate_with_docuseal_pro: Activate Pro feature
   send_signature_request_to_your_recipients_directly_from_your_email: Send signature request to your recipients directly from your email
   connect_gmail: Connect Gmail
   re_connect_gmail: Re-connect Gmail
@@ -427,7 +427,7 @@ en: &en
   upgrade_to_send_unlimited_signature_requests: Upgrade to send unlimited signature requests
   add_without_sending: Add without sending
   upgade_now: Upgrade Now
-  send_signature_request_emails_without_limits_with_docuseal_pro: Send signature request emails without limits with DocuSeal Pro
+  send_signature_request_emails_without_limits_with_docuseal_pro: Send signature request emails without limits with Pro features
   count_emails_used: '%{count} emails used'
   has_been_connected: has been connected
   sms_not_configured: SMS not Configured
@@ -529,7 +529,7 @@ en: &en
   new_user: New User
   unarchive: Unarchive
   last_session: Last session
-  unlock_more_user_roles_with_docuseal_pro: Unlock more user roles with DocuSeal Pro.
+  unlock_more_user_roles_with_docuseal_pro: Unlock more user roles with Pro features.
   view_active: View Active
   team_account: Team account
   team_accounts: Team Accounts
@@ -774,7 +774,7 @@ en: &en
   pro_user_seats_used: Pro user seats used
   manage_plan: Manage plan
   this_submission_has_multiple_signers_which_prevents_the_use_of_a_sharing_link_html: This submission has multiple signers, which prevents the use of a sharing link as it's unclear which signer is responsible for specific fields. To resolve this, follow this <a href="https://www.docuseal.com/resources/pre-filling-recipients" class="link font-bold" rel="noopener noreferrer nofollow" target="_blank">guide</a> to define the default signer details.
-  welcome_to_docuseal: Welcome to DocuSeal
+  welcome_to_docuseal: Welcome to DocuIzzi
   start_a_quick_tour_to_learn_how_to_create_and_send_your_first_document: Start a quick tour to learn how to create and send your first document
   start_tour: Start Tour
   name_a_z: Name A-Z
@@ -1142,8 +1142,8 @@ es: &es
   you_have_been_invited_to_account_name_product_name_please_sign_up_using_the_link_below_: 'Has sido invitado a %{account_name} %{product_name}. Por favor, regístrate usando el enlace a continuación:'
   sent_using_product_name_in_testing_mode_html: 'Enviado usando <a href="%{product_url}">%{product_name}</a> en Modo de Prueba'
   sent_using_product_name_free_document_signing_html: 'Enviado usando la firma de documentos gratuita de <a href="%{product_url}">%{product_name}</a>.'
-  sent_with_docuseal_pro_html: 'Enviado con <a href="%{product_url}">DocuSeal Pro</a>'
-  show_send_with_docuseal_pro_attribution_in_emails_html: Mostrar el mensaje "Enviado con <span class="link">DocuSeal Pro</span>" en los correos electrónicos
+  sent_with_docuseal_pro_html: 'Enviado con <a href="%{product_url}">funciones Pro</a>'
+  show_send_with_docuseal_pro_attribution_in_emails_html: Mostrar el mensaje "Enviado con <span class="link">funciones Pro</span>" en los correos electrónicos
   sign_documents_with_trusted_certificate_provided_by_docu_seal_your_documents_and_data_are_never_shared_with_docu_seal_p_d_f_checksum_is_provided_to_generate_a_trusted_signature: Firme documentos con un certificado de confianza proporcionado por DocuSeal. Sus documentos y datos nunca se comparten con DocuSeal. Se proporciona un checksum de PDF para generar una firma de confianza.
   hi_there: Hola
   thanks: Gracias
@@ -1303,7 +1303,7 @@ es: &es
   save: Guardar
   saving: Guardando
   changes_have_been_saved: Los cambios han sido guardados.
-  unlock_with_docuseal_pro: Desbloquear con DocuSeal Pro
+  unlock_with_docuseal_pro: Desbloquear función Pro
   use_your_own_certificates_to_sign_and_verify_pdf_files: Usa tus propios certificados para firmar y verificar archivos PDF.
   upload_certificate: Subir certificado
   name: Nombre
@@ -1403,7 +1403,7 @@ es: &es
   password_has_been_changed: La contraseña ha sido cambiada.
   email_integration: Integración de correo electrónico
   send_via_connected_email: Enviar vía correo electrónico conectado
-  activate_with_docuseal_pro: Activar con DocuSeal Pro
+  activate_with_docuseal_pro: Activar función Pro
   send_signature_request_to_your_recipients_directly_from_your_email: Envía la solicitud de firma a tus destinatarios directamente desde tu correo electrónico
   connect_gmail: Conectar Gmail
   re_connect_gmail: Volver a conectar Gmail
@@ -1483,7 +1483,7 @@ es: &es
   upgrade_to_send_unlimited_signature_requests: Actualiza para enviar solicitudes de firma ilimitadas
   add_without_sending: Agregar sin enviar
   upgade_now: Actualizar ahora
-  send_signature_request_emails_without_limits_with_docuseal_pro: Envía solicitudes de firma sin límites con DocuSeal Pro
+  send_signature_request_emails_without_limits_with_docuseal_pro: Envía solicitudes de firma sin límites con funciones Pro
   count_emails_used: '%{count} correos electrónicos utilizados'
   has_been_connected: ha sido conectado
   sms_not_configured: SMS no configurado
@@ -1585,7 +1585,7 @@ es: &es
   new_user: Nuevo usuario
   unarchive: Desarchivar
   last_session: Última sesión
-  unlock_more_user_roles_with_docuseal_pro: Desbloquea más roles de usuario con DocuSeal Pro.
+  unlock_more_user_roles_with_docuseal_pro: Desbloquea más roles de usuario con funciones Pro.
   view_active: Ver activos
   team_account: Cuenta de equipo
   team_accounts: Cuentas de equipo
@@ -1827,7 +1827,7 @@ es: &es
   pro_user_seats_used: Plazas de usuario Pro en uso
   manage_plan: Gestionar plan
   this_submission_has_multiple_signers_which_prevents_the_use_of_a_sharing_link_html: 'Este envío tiene múltiples firmantes, lo que impide el uso de un enlace para compartir, ya que no está claro qué firmante es responsable de los campos específicos. Para resolver esto, sigue esta <a href="https://www.docuseal.com/resources/pre-filling-recipients" class="link font-bold" rel="noopener noreferrer nofollow" target="_blank">guía</a> para definir los detalles predeterminados del firmante.'
-  welcome_to_docuseal: Bienvenido a DocuSeal
+  welcome_to_docuseal: Bienvenido a DocuIzzi
   start_a_quick_tour_to_learn_how_to_create_and_send_your_first_document: Inicia una guía rápida para aprender a crear y enviar tu primer documento.
   start_tour: Iniciar guía
   name_a_z: Nombre A-Z

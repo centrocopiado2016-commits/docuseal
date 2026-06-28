@@ -5,7 +5,8 @@ module Docuseal
   PRODUCT_EMAIL_URL = ENV.fetch('PRODUCT_EMAIL_URL', PRODUCT_URL)
   NEWSLETTER_URL = "#{PRODUCT_URL}/newsletters".freeze
   ENQUIRIES_URL = "#{PRODUCT_URL}/enquiries".freeze
-  PRODUCT_NAME = 'DocuSeal'
+  ORIGINAL_PRODUCT_NAME = 'DocuSeal'
+  PRODUCT_NAME = ENV.fetch('PRODUCT_NAME', 'DocuIzzi')
   DEFAULT_APP_URL = ENV.fetch('APP_URL', 'http://localhost:3000')
   GITHUB_URL = 'https://github.com/docusealco/docuseal'
   DISCORD_URL = 'https://discord.gg/qygYCDGck9'
@@ -117,6 +118,10 @@ module Docuseal
 
   def product_name
     PRODUCT_NAME
+  end
+
+  def attribution_name
+    ORIGINAL_PRODUCT_NAME
   end
 
   def refresh_default_url_options!
