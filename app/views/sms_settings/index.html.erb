@@ -3,6 +3,18 @@
   <div class="flex-grow max-w-xl mx-auto">
     <h1 class="text-4xl font-bold mb-4">WhatsApp</h1>
     <% value = @encrypted_config.value || {} %>
+
+    <% if @encrypted_config.errors.any? %>
+      <div class="alert alert-error mb-4">
+        <%= svg_icon('info_circle', class: 'w-6 h-6') %>
+        <div>
+          <% @encrypted_config.errors.full_messages.each do |message| %>
+            <p><%= message %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
     <%= form_for @encrypted_config, url: settings_sms_path, method: :post, html: { autocomplete: 'off', class: 'space-y-4' } do |f| %>
       <%= f.fields_for :value do |ff| %>
         <div class="form-control">
@@ -15,7 +27,7 @@
             <%= ff.email_field :email, value: value['email'], required: true, class: 'base-input' %>
           </div>
           <div class="form-control">
-            <%= ff.label :password, 'Contraseña', class: 'label' %>
+            <%= ff.label :password, 'Contrasena', class: 'label' %>
             <%= ff.password_field :password, required: value['password'].blank?, placeholder: value['password'].present? ? '*************' : '', class: 'base-input' %>
           </div>
         </div>
@@ -25,13 +37,13 @@
             <%= ff.number_field :whatsapp_id, value: value['whatsapp_id'] || value['whatsappId'], required: true, class: 'base-input' %>
           </div>
           <div class="form-control">
-            <%= ff.label :country_code, 'Código de país por defecto', class: 'label' %>
+            <%= ff.label :country_code, 'Codigo de pais por defecto', class: 'label' %>
             <%= ff.text_field :country_code, value: value['country_code'] || '504', required: true, class: 'base-input' %>
           </div>
         </div>
       <% end %>
       <div class="form-control pt-2">
-        <%= f.button button_title(title: t('save'), disabled_with: t('saving')), class: 'base-button' %>
+        <%= f.button button_title(title: 'Guardar y probar conexion', disabled_with: 'Probando conexion...'), class: 'base-button' %>
       </div>
     <% end %>
   </div>

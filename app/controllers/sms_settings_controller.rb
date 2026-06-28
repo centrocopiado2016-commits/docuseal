@@ -8,11 +8,25 @@ class SmsSettingsController < ApplicationController
   def index; end
 
   def create
-    if @encrypted_config.update(whatsapp_configs)
+    attrs = whatsapp_configs
+
+    WhatsappMessages.test_connection!(attrs[:value])
+
+    if @encrypted_config.update(attrs)
       redirect_to settings_sms_path, notice: I18n.t('changes_have_been_saved')
     else
       render :index, status: :unprocessable_content
     end
+  rescue WhatsappMessages::ConfigError, WhatsappMessages::LoginError, WhatsappMessages::ConnectionError => e
+    @encrypted_config.assign_attributes(attrs) if defined?(attrs) && attrs
+    @encrypted_config.errors.add(:base, e.message)
+
+    render :index, status: :unprocessable_content
+  rescue SocketError, Errno::ECONNREFUSED, Net::OpenTimeout, Net::ReadTimeout => e
+    @encrypted_config.assign_attributes(attrs) if defined?(attrs) && attrs
+    @encrypted_config.errors.add(:base, "Error de conexion con WhatsApp: #{e.message}")
+
+    render :index, status: :unprocessable_content
   end
 
   private
