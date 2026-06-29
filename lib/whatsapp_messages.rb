@@ -1,7 +1,8 @@
-# frozen_string_literal: true
+﻿# frozen_string_literal: true
 
 require 'json'
 require 'net/http'
+require 'openssl'
 require 'uri'
 
 module WhatsappMessages
@@ -99,7 +100,7 @@ module WhatsappMessages
     request['Authorization'] = "Bearer #{token}" if token.present?
     request.body = payload.to_json
 
-    Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https', read_timeout: 20, open_timeout: 10) do |http|
+    Net::HTTP.start(uri.hostname, uri.port, **http_options(uri)) do |http|
       http.request(request)
     end
   end
@@ -110,8 +111,20 @@ module WhatsappMessages
     request['Accept'] = 'application/json'
     request['Authorization'] = "Bearer #{token}" if token.present?
 
-    Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https', read_timeout: 20, open_timeout: 10) do |http|
+    Net::HTTP.start(uri.hostname, uri.port, **http_options(uri)) do |http|
       http.request(request)
     end
   end
+  def http_options(uri)
+    options = {
+      use_ssl: uri.scheme == 'https',
+      read_timeout: 20,
+      open_timeout: 10
+    }
+
+    options[:verify_mode] = OpenSSL::SSL::VERIFY_NONE if options[:use_ssl]
+
+    options
+  end
 end
+
