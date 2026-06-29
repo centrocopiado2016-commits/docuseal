@@ -35,7 +35,7 @@ module WhatsappMessages
       whatsappId: config['whatsapp_id'].to_i
     }
 
-    response = post_json(config['api_url'], '/api/messages/send-by-number', payload, token:)
+    response = post_json(config['api_url'], '/api/messages/send', payload, token:)
 
     return response if response.is_a?(Net::HTTPSuccess)
 
@@ -127,4 +127,5 @@ module WhatsappMessages
     options
   end
 end
+
 
